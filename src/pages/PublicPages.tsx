@@ -11,13 +11,11 @@ import { Link, useParams } from "react-router-dom";
 import { DocumentTypeCard } from "../components/documents/DocumentTypeCard";
 import {
   en,
-  interactiveDemo as interactiveDemoEn,
   marketing as marketingEn,
   whatsapp as whatsappEn,
 } from "../locales/en";
 import {
   es,
-  interactiveDemo as interactiveDemoEs,
   marketing as marketingEs,
   whatsapp as whatsappEs,
 } from "../locales/es";
@@ -111,7 +109,6 @@ export function Home({ locale }: { locale: Locale }) {
           </div>
         </div>
       </section>
-      <InteractiveDemo locale={locale} />
       <Workflow locale={locale} />
       <Gallery locale={locale} />
       <section className="section pt-0">
@@ -154,11 +151,6 @@ export function Home({ locale }: { locale: Locale }) {
   );
 }
 
-function InteractiveDemo({ locale }: { locale: Locale }) {
-  const demo = locale === "en" ? interactiveDemoEn : interactiveDemoEs;
-  const documents = copy(locale).documents;
-  return <section className="section pb-0"><div className="shell"><motion.article initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} whileHover={{ y: -3 }} className="premium-card grid gap-8 overflow-hidden bg-gradient-to-br from-blue-50 via-white to-sky-100 p-7 lg:grid-cols-[1.1fr_.9fr] lg:p-10"><div className="order-2 lg:order-1"><span className="rounded-full bg-brand px-3 py-1 text-xs font-black text-white">{demo.badge}</span><h2 className="mt-5 text-3xl font-black">{demo.title}</h2><p className="mt-4 max-w-xl leading-7 text-slate-600">{demo.description}</p><ul className="mt-6 grid gap-2 text-sm font-bold text-slate-700">{demo.items.map(item=><li className="flex gap-2" key={item}><CheckCircle2 className="text-brand" size={18}/>{item}</li>)}</ul><a className="primary mt-7 w-full sm:w-auto" href="https://next-studio-ai-business-platform.vercel.app/" target="_blank" rel="noopener noreferrer">{demo.launch}<ArrowRight size={18}/></a></div><div className="order-1 relative rounded-2xl bg-gradient-to-br from-navy to-brand p-5 text-white lg:order-2"><span className="absolute right-4 top-4 rounded-full bg-white/15 px-3 py-1 text-xs font-black">{demo.live}</span><div className="rounded-xl bg-white/10 p-5 shadow-2xl"><b>NEXT STUDIO</b><div className="mt-6 grid grid-cols-3 gap-2">{[documents.invoice,documents.estimate,documents.proposal].map(name=><div className="rounded-lg bg-white/10 p-3" key={name}><FileText size={18}/><p className="mt-6 text-[10px] font-bold">{name}</p></div>)}</div></div></div></motion.article></div></section>;
-}
 function Workflow({ locale }: { locale: Locale }) {
   const m = marketing(locale),
     icons = [FileText, Sparkles, Share2];
