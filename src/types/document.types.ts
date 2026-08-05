@@ -1,0 +1,10 @@
+export type Locale="en"|"es";
+export type DocumentType="invoice"|"estimate"|"proposal";
+export type DocumentStatus="draft"|"sent"|"viewed"|"accepted"|"approved"|"paid"|"partially-paid"|"rejected"|"expired"|"converted";
+export type CurrencyCode="USD"|"EUR"|"GBP"|"CAD"|"MXN"|"COP"|"PEN";
+export type DiscountType="fixed"|"percentage";
+export interface BusinessProfile{id:string;businessName:string;logoUrl:string;addressLine1:string;addressLine2:string;city:string;state:string;postalCode:string;country:string;phone:string;email:string;website:string;taxId:string}
+export interface Client{id:string;name:string;company:string;email:string;phone:string;addressLine1:string;addressLine2:string;city:string;state:string;postalCode:string;country:string}
+export interface DocumentLineItem{id:string;description:string;details:string;quantity:number;unit:string;rate:number;discountType:DiscountType;discountValue:number;taxable:boolean;taxRate:number;lineSubtotal:number;lineDiscount:number;lineTax:number;lineTotal:number}
+export interface ProposalContent{projectTitle:string;executiveSummary:string;clientChallenge:string;proposedSolution:string;scopeOfWork:string;timeline:string;deliverables:string;exclusions:string;investmentSummary:string;validityDays:number;acceptanceText:string}
+export interface BusinessDocument{id:string;documentType:DocumentType;documentNumber:string;language:Locale;status:DocumentStatus;business:BusinessProfile;client:Client;issueDate:string;dueDate:string;expirationDate:string;currency:CurrencyCode;items:DocumentLineItem[];globalDiscountType:DiscountType;globalDiscountValue:number;shipping:number;depositRequired:number;amountPaid:number;subtotal:number;discountTotal:number;taxTotal:number;total:number;balanceDue:number;notes:string;terms:string;paymentInstructions:string;signatureName:string;signatureImage:string;templateId:string;primaryColor:string;accentColor:string;createdAt:string;updatedAt:string;convertedFromId?:string;convertedToId?:string;proposalContent?:ProposalContent}

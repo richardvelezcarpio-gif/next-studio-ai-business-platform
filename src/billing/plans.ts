@@ -1,0 +1,1 @@
+export const plans=[{id:"free",name:"Free",price:0},{id:"professional",name:"Professional",price:19},{id:"business",name:"Business",price:49},{id:"white-label",name:"White Label",price:149}] as const;

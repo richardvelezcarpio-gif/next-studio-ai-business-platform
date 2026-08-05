@@ -1,0 +1,1 @@
+export type SubscriptionStatus="trial"|"active"|"past_due"|"cancelled";export interface Subscription{planId:string;status:SubscriptionStatus;provider?:"stripe"|"paypal"|"square";currentPeriodEnd?:string}

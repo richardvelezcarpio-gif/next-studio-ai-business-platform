@@ -1,0 +1,1 @@
+import {Outlet}from"react-router-dom";import {PublicHeader}from"./PublicHeader";import {PublicFooter}from"./PublicFooter";import{WhatsAppAssistantWidget}from"../WhatsAppAssistantWidget";export function PublicLayout({locale}:{locale:"en"|"es"}){return <><PublicHeader locale={locale}/><Outlet/><PublicFooter locale={locale}/><WhatsAppAssistantWidget locale={locale}/></>}
