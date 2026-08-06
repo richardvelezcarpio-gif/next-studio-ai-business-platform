@@ -1,4 +1,145 @@
-import { motion } from "framer-motion";import {platform as en}from"../locales/en";import {platform as es}from"../locales/es";
-import { BarChart3, CircleDollarSign, FileText, FileWarning, Plus, Send, TrendingUp } from "lucide-react";
-const metrics=[['Total Revenue','$48,750',CircleDollarSign],['Outstanding','$7,850',FileWarning],['Paid','$40,900',TrendingUp],['Overdue','$1,240',FileWarning],['Open Estimates','18',FileText],['Proposal Conversion','68%',Send]];
-export function DashboardDemo(){return <section><div className="flex flex-wrap items-center justify-between gap-4"><div><p className="eyebrow">NEXT STUDIO / LIVE OVERVIEW</p><h1 className="mt-2 text-3xl font-black">Business, beautifully organized.</h1></div><button className="primary"><Plus size={17}/>Create New Document</button></div><div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{metrics.map(([label,value,Icon])=>{const I=Icon as typeof CircleDollarSign;return <motion.article whileHover={{y:-4}} className="premium-card p-5" key={label as string}><div className="flex items-center justify-between"><span className="text-sm font-bold text-slate-500">{label as string}</span><I size={18} className="text-brand"/></div><strong className="mt-4 block text-3xl tracking-tight text-navy">{value as string}</strong><span className="mt-2 inline-block text-xs font-bold text-emerald-600">+12.4% this month</span></motion.article>})}</div><div className="mt-5 grid gap-5 xl:grid-cols-[1.3fr_.7fr]"><article className="premium-card p-6"><div className="flex items-center gap-3"><BarChart3 className="text-brand"/><div><h2 className="font-black">Document Growth</h2><p className="text-sm text-slate-500">A clearer view of your momentum</p></div></div><div className="mt-9 flex h-48 items-end gap-3">{[36,64,48,82,61,92,76].map((v,i)=><motion.span initial={{height:0}} animate={{height:`${v}%`}} transition={{delay:i*.08}} className="flex-1 rounded-t-xl bg-gradient-to-t from-blue-600 to-sky-300" key={i}/>)}</div></article><article className="premium-card p-6"><h2 className="font-black">Recent Activity</h2>{['Invoice INV-2026-024 was paid','Estimate EST-2026-018 opened','Premium proposal shared'].map((x,i)=><div className="mt-5 flex items-center gap-3" key={x}><span className="grid h-9 w-9 place-items-center rounded-full bg-blue-50 text-brand">0{i+1}</span><p className="text-sm font-semibold">{x}<br/><span className="font-normal text-slate-400">Just now</span></p></div>)}</article></div><article className="premium-card mt-5 p-6"><h2 className="font-black">Latest documents</h2><div className="mt-4 grid gap-3 sm:grid-cols-3">{['Modern Print · INV-024','$4,850 · Paid','Acme Construction · EST-018'].map((x,i)=><div className="rounded-xl border border-white/70 bg-white/60 p-4" key={x}><FileText className="mb-5 text-brand" size={20}/><b className="text-sm">{x}</b><p className="mt-1 text-xs text-slate-500">Updated today</p></div>)}</div></article></section>}
+import { Link, useSearchParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  BarChart3,
+  CircleDollarSign,
+  FileText,
+  FileWarning,
+  Plus,
+  TrendingUp,
+} from "lucide-react";
+import { copy, getIndustryPack } from "../data/industryPacks";
+import { platformRoutes } from "../components/platform/PlatformDemoModules";
+
+const text = (locale: "en" | "es", en: string, es: string) =>
+  locale === "en" ? en : es;
+
+export function DashboardDemo() {
+  const [searchParams] = useSearchParams();
+  const locale = window.location.pathname.startsWith("/es/") ? "es" : "en";
+  const pack = getIndustryPack(searchParams.get("industry"));
+  const documentPath = platformRoutes.withIndustry(
+    `/${locale}/app/${locale === "en" ? "documents" : "documentos"}`,
+    pack,
+  );
+  const icons = [CircleDollarSign, FileWarning, FileText, TrendingUp];
+  return (
+    <section>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <p className="eyebrow">
+            NEXT STUDIO / {text(locale, "LIVE OVERVIEW", "RESUMEN EN VIVO")}
+          </p>
+          <h1 className="mt-2 text-3xl font-black">
+            {text(
+              locale,
+              "Business, beautifully organized.",
+              "Tu negocio, bellamente organizado.",
+            )}
+          </h1>
+          <span className="mt-3 inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-brand">
+            {text(locale, "Demo Data", "Datos de demostración")} ·{" "}
+            {copy(locale, pack.name)}
+          </span>
+        </div>
+        <Link className="primary" to={documentPath}>
+          <Plus size={17} />
+          {text(locale, "Create New Document", "Crear nuevo documento")}
+        </Link>
+      </div>
+      <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {pack.metrics.map((metric, index) => {
+          const Icon = icons[index];
+          return (
+            <motion.article
+              whileHover={{ y: -4 }}
+              className="premium-card p-5"
+              key={metric.en}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-bold text-slate-500">
+                  {copy(locale, metric)}
+                </span>
+                <Icon size={18} className="text-brand" />
+              </div>
+              <strong className="mt-4 block text-3xl tracking-tight text-navy">
+                {metric.value}
+              </strong>
+              <span className="mt-2 inline-block text-xs font-bold text-brand">
+                {text(locale, "Demo data", "Datos demo")}
+              </span>
+            </motion.article>
+          );
+        })}
+      </div>
+      <div className="mt-5 grid gap-5 xl:grid-cols-[1.3fr_.7fr]">
+        <article className="premium-card p-6">
+          <div className="flex items-center gap-3">
+            <BarChart3 className="text-brand" />
+            <div>
+              <h2 className="font-black">
+                {text(locale, "Document growth", "Crecimiento de documentos")}
+              </h2>
+              <p className="text-sm text-slate-500">
+                {text(
+                  locale,
+                  "An illustrative view of activity.",
+                  "Una vista ilustrativa de la actividad.",
+                )}
+              </p>
+            </div>
+          </div>
+          <div className="mt-9 flex h-48 items-end gap-3">
+            {[36, 64, 48, 82, 61, 92, 76].map((height, index) => (
+              <motion.span
+                initial={{ height: 0 }}
+                animate={{ height: `${height}%` }}
+                transition={{ delay: index * 0.08 }}
+                className="flex-1 rounded-t-xl bg-gradient-to-t from-blue-600 to-sky-300"
+                key={height}
+              />
+            ))}
+          </div>
+        </article>
+        <article className="premium-card p-6">
+          <h2 className="font-black">
+            {text(locale, "Recent demo activity", "Actividad demo reciente")}
+          </h2>
+          {pack.events.slice(0, 3).map((event, index) => (
+            <div className="mt-5 flex items-center gap-3" key={event.en}>
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-blue-50 text-brand">
+                0{index + 1}
+              </span>
+              <p className="text-sm font-semibold">
+                {copy(locale, event)}
+                <br />
+                <span className="font-normal text-slate-400">
+                  {event.customer}
+                </span>
+              </p>
+            </div>
+          ))}
+        </article>
+      </div>
+      <article className="premium-card mt-5 p-6">
+        <h2 className="font-black">
+          {text(locale, "Latest demo documents", "Últimos documentos demo")}
+        </h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          {pack.tools.map((tool, index) => (
+            <div
+              className="rounded-xl border border-white/70 bg-white/60 p-4"
+              key={tool.en}
+            >
+              <FileText className="mb-5 text-brand" size={20} />
+              <b className="text-sm">{copy(locale, tool)}</b>
+              <p className="mt-1 text-xs text-slate-500">
+                {text(locale, "Demo document", "Documento demo")} 0{index + 1}
+              </p>
+            </div>
+          ))}
+        </div>
+      </article>
+    </section>
+  );
+}
