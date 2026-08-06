@@ -5,17 +5,21 @@ import {
   CalendarDays,
   FileText,
   LayoutTemplate,
+  Home,
   Settings,
   Users,
 } from "lucide-react";
 import { DemoBadge } from "../common/DemoBadge";
 import { platform as en } from "../../locales/en";
 import { platform as es } from "../../locales/es";
+import { navigation as enNavigation } from "../../locales/en";
+import { navigation as esNavigation } from "../../locales/es";
 import { WhatsAppAssistantWidget } from "../WhatsAppAssistantWidget";
 import { LanguageSwitcher } from "../common/LanguageSwitcher";
 
 export function DemoLayout({ locale }: { locale: "en" | "es" }) {
   const t = locale === "en" ? en : es;
+  const navigation = locale === "en" ? enNavigation : esNavigation;
   const location = useLocation();
   const base = `/${locale}/app`;
   const query = location.search;
@@ -47,6 +51,15 @@ export function DemoLayout({ locale }: { locale: "en" | "es" }) {
       <div className="mx-auto grid w-full max-w-[1400px] md:grid-cols-[220px_1fr]">
         <aside className="border-r bg-white/70 p-3 md:min-h-[calc(100vh-64px)] md:p-4">
           <nav className="grid grid-cols-2 gap-2 md:grid-cols-1">
+            <Link
+              className="col-span-2 flex items-center gap-2 rounded-xl border border-blue-100 bg-blue-50 px-3 py-2 text-sm font-bold text-brand transition hover:border-blue-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand md:col-span-1"
+              to={`/${locale}`}
+              aria-label={navigation.backHome}
+              title={navigation.backHome}
+            >
+              <Home size={16} aria-hidden="true" />
+              <span className="truncate">{navigation.backHome}</span>
+            </Link>
             {items.map(([path, label, Icon]) => (
               <Link
                 key={path}
